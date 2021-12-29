@@ -52,7 +52,7 @@ class ContributorSerializer(ModelSerializer):
 class IssueSerializer(ModelSerializer):
     class Meta:
         model = Issues
-        fields = ['title', 'desc', 'tag', 'priority']
+        fields = ['title', 'desc', 'tag', 'priority', 'status']
 
 
 class CommentSerializer(ModelSerializer):

@@ -28,3 +28,7 @@ class ContributorPermissions(BasePermission):
 
 class IssuePermissions(BasePermission):
     pass
+
+
+class CommentPermissions(BasePermission):
+    pass

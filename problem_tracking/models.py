@@ -42,24 +42,30 @@ class Contributors(models.Model):
 class Issues(models.Model):
 
     class Priority(models.TextChoices):
-        FAI = '1', 'FAIBLE'
-        MOY = '2', 'MOYENNE'
-        ELE = '3', 'ÉLEVÉE'
+        FAI = 'FAIBLE', 'FAIBLE'
+        MOY = 'MOYENNE', 'MOYENNE'
+        ELE = 'ÉLEVÉE', 'ÉLEVÉE'
 
     class Tag(models.TextChoices):
-        BUG = '1', 'BUG'
-        AME = '2', 'AMÉLIORATION'
-        TAC = '3', 'TÂCHE'
+        BUG = 'BUG', 'BUG'
+        AME = 'AMÉLIORATION', 'AMÉLIORATION'
+        TAC = 'TÂCHE', 'TÂCHE'
+
+    class Status(models.TextChoices):
+        AFA = 'A FAIRE', 'A FAIRE'
+        ENC = 'EN COURS', 'EN COURS'
+        TER = 'TERMINÉ', 'TERMINÉ'
 
     title = models.CharField(max_length=128)
     desc = models.CharField(max_length=2048)
-    tag = models.CharField(max_length=12, choices=Tag.choices, default=Tag.BUG)
-    priority = models.CharField(max_length=7, choices=Priority.choices, default=Priority.FAI)
+    tag = models.CharField(max_length=64, choices=Tag.choices, default=Tag.BUG)
+    priority = models.CharField(max_length=64, choices=Priority.choices, default=Priority.FAI)
     project = models.ForeignKey(to=Projects, on_delete=models.CASCADE, related_name='issue_project', null=True)
+    status = models.CharField(max_length=64,choices=Status.choices, default=Status.AFA)
     author_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                     related_name='issue_author', null=True)
     assignee_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-                                      related_name='issue_assigned', null=True)
+                                      related_name='issue_assignee', null=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
 
