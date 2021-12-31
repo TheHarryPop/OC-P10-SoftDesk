@@ -1,6 +1,6 @@
 from rest_framework.generics import CreateAPIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User as Auth_user
 from rest_framework.response import Response
 
@@ -46,7 +46,8 @@ class ContributorsViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = ContributorSerializer(data=request.data)
         serializer.is_valid()
-        serializer.save(project=Projects.objects.get(pk=self.kwargs['project_pk']))
+        print(request.data['user'])
+        serializer.save(project=Projects.objects.get(pk=self.kwargs['project_pk']), id=request.data['user'])
         return Response(serializer.data)
 
 
@@ -73,3 +74,10 @@ class CommentsViewSet(ModelViewSet):
 
     def get_queryset(self):
         return Comments.objects.filter(issue=self.kwargs['issue_pk'])
+
+    def create(self, request, *args, **kwargs):
+        serializer = CommentSerializer(data=request.data)
+        serializer.is_valid()
+        serializer.save(author_user=request.user, issue=Issues.objects.get(pk=self.kwargs['issue_pk']))
+        return Response(serializer.data)
+

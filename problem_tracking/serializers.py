@@ -58,4 +58,4 @@ class IssueSerializer(ModelSerializer):
 class CommentSerializer(ModelSerializer):
     class Meta:
         model = Comments
-        fields = ['comment_id', 'description', 'author_user_id', 'issue_id']
+        fields = ['description']
