@@ -4,8 +4,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User as Auth_user
 from rest_framework.response import Response
 
-from .serializers import ProjectSerializer, RegisterSerializer, ContributorSerializer, IssueSerializer, \
-    CommentSerializer
+from .serializers import ProjectListSerializer, ProjectDetailSerializer, RegisterSerializer, ContributorSerializer, \
+    IssueSerializer, CommentSerializer
 from .models import Projects, Contributors, Issues, Comments
 from .permissions import ProjectPermissions, ContributorPermissions, IssuePermissions, CommentPermissions
 
@@ -22,17 +22,23 @@ class RegisterView(CreateAPIView):
 class ProjectsViewSet(ModelViewSet):
 
     permission_classes = [IsAuthenticated, ProjectPermissions]
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectListSerializer
+    detail_serializer_class = ProjectDetailSerializer
 
     def get_queryset(self):
         return Projects.objects.filter(contributor_project__user=self.request.user)
 
     def create(self, request, *args, **kwargs):
-        serializer = ProjectSerializer(data=request.data)
+        serializer = ProjectDetailSerializer(data=request.data)
         serializer.is_valid()
         project = serializer.save(author_user=request.user)
         Contributors.objects.create(user=request.user, project=project, role='AUTHOR')
         return Response(serializer.data)
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return self.detail_serializer_class
+        return super().get_serializer_class()
 
 
 class ContributorsViewSet(ModelViewSet):

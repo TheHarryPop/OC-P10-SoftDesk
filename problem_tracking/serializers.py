@@ -35,14 +35,20 @@ class RegisterSerializer(ModelSerializer):
         return auth_user
 
 
-class ProjectSerializer(ModelSerializer):
+class ProjectListSerializer(ModelSerializer):
     class Meta:
         model = Projects
-        fields = ['title', 'description', 'type', 'id']
+        fields = ['id', 'title']
+
+
+class ProjectDetailSerializer(ModelSerializer):
+    class Meta:
+        model = Projects
+        fields = ['id', 'title', 'description', 'type', 'author_user']
 
 
 class ContributorSerializer(ModelSerializer):
-    project = ProjectSerializer
+    project = ProjectDetailSerializer
 
     class Meta:
         model = Contributors
