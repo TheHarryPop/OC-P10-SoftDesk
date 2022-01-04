@@ -26,27 +26,10 @@ class ContributorPermissions(BasePermission):
         return project.author_user == request.user
 
 
-class IssuePermissions(BasePermission):
+class IssueCommentPermissions(BasePermission):
 
     def has_permission(self, request, view):
-        contributors = []
-        for contributor in Contributors.objects.filter(project=view.kwargs['project_pk']):
-            contributors.append(contributor.user)
-        return request.user in contributors
-
-    def has_object_permission(self, request, view, obj):
-        if request.method in SAFE_METHODS:
-            return True
-        return obj.author_user == request.user
-
-
-class CommentPermissions(BasePermission):
-
-    def has_permission(self, request, view):
-        contributors = []
-        for contributor in Contributors.objects.filter(project=view.kwargs['project_pk']):
-            contributors.append(contributor.user)
-        return request.user in contributors
+        return Contributors.objects.filter(project=view.kwargs['project_pk'], user=request.user).exists()
 
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:

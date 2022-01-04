@@ -8,7 +8,7 @@ from .serializers import ProjectListSerializer, ProjectDetailSerializer, Registe
     ContributorListSerializer, ContributorDetailSerializer, IssueListSerializer, IssueDetailSerializer, \
     CommentListSerializer, CommentDetailSerializer
 from .models import Projects, Contributors, Issues, Comments
-from .permissions import ProjectPermissions, ContributorPermissions, IssuePermissions, CommentPermissions
+from .permissions import ProjectPermissions, ContributorPermissions, IssueCommentPermissions
 
 
 class RegisterView(CreateAPIView):
@@ -65,7 +65,7 @@ class ContributorsViewSet(ModelViewSet):
 
 class IssuesViewSet(ModelViewSet):
 
-    permission_classes = [IsAuthenticated, IssuePermissions]
+    permission_classes = [IsAuthenticated, IssueCommentPermissions]
     serializer_class = IssueListSerializer
     detail_serializer_class = IssueDetailSerializer
 
@@ -87,15 +87,12 @@ class IssuesViewSet(ModelViewSet):
 
 class CommentsViewSet(ModelViewSet):
 
-    permission_classes = [IsAuthenticated, CommentPermissions]
+    permission_classes = [IsAuthenticated, IssueCommentPermissions]
     serializer_class = CommentListSerializer
     detail_serializer_class = CommentDetailSerializer
 
     def get_queryset(self):
         return Comments.objects.filter(issue=self.kwargs['issue_pk'])
-        """
-        return Comments.objects.filter(issue=self.kwargs['issue_pk'].objects.filter(project=self.kwargs['project_pk']))
-        """
 
     def create(self, request, *args, **kwargs):
         serializer = CommentDetailSerializer(data=request.data)
