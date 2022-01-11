@@ -44,17 +44,17 @@ class Issues(models.Model):
     class Priority(models.TextChoices):
         FAI = 'FAIBLE', 'FAIBLE'
         MOY = 'MOYENNE', 'MOYENNE'
-        ELE = 'ÉLEVÉE', 'ÉLEVÉE'
+        ELE = 'ELEVEE', 'ELEVEE'
 
     class Tag(models.TextChoices):
         BUG = 'BUG', 'BUG'
-        AME = 'AMÉLIORATION', 'AMÉLIORATION'
-        TAC = 'TÂCHE', 'TÂCHE'
+        AME = 'AMELIORATION', 'AMELIORATION'
+        TAC = 'TACHE', 'TACHE'
 
     class Status(models.TextChoices):
         AFA = 'A FAIRE', 'A FAIRE'
         ENC = 'EN COURS', 'EN COURS'
-        TER = 'TERMINÉ', 'TERMINÉ'
+        TER = 'TERMINE', 'TERMINE'
 
     title = models.CharField(max_length=128)
     desc = models.CharField(max_length=2048)

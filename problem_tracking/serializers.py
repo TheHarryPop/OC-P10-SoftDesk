@@ -29,7 +29,7 @@ class RegisterSerializer(ModelSerializer):
         auth_user.set_password(validated_data['password'])
         auth_user.save()
         user = Users.objects.create(email=auth_user.email, first_name=auth_user.first_name, user=auth_user,
-                                    last_name=auth_user.last_name, password=auth_user.password)
+                                    last_name=auth_user.last_name, password=auth_user.password, id=auth_user.id)
         user.save()
         return auth_user
 
