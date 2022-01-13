@@ -6,12 +6,11 @@ rencontrés. Des commentaires permettent d'assurer le suivi de résolution des p
 ## Installation et lancement
 
 ```bash
-$ https://github.com/TheHarryPop/SoftDesk.git
+$ git clone https://github.com/TheHarryPop/SoftDesk.git
 $ cd SoftDesk
 $ python3 -m venv env (Sous Windows => python -m venv env)
 $ source env/bin/activate (Sous Windows => env\Scripts\activate)
 $ pip install -r requirements.txt
-$ cd SoftDesk
 $ python manage.py runserver
 ```
 
